@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  service-upload-media:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: upload-media
+    image: service-upload-media:v1.0.0
+    volumes:
+      - ./app.env:/app/app.env
+    env_file:
+      - app.env
+    ports:
+      - "${WEBSERVER_PORT}:${WEBSERVER_PORT}"

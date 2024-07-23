@@ -1,0 +1,127 @@
+basePath: /api/v1
+definitions:
+  models.Block:
+    properties:
+      string:
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Transaction:
+    properties:
+      data:
+        items:
+          type: integer
+        type: array
+      gas:
+        type: integer
+      gasPrice:
+        type: string
+      hash:
+        type: string
+      nonce:
+        type: integer
+      timestamp:
+        type: string
+      to:
+        type: string
+      value:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Upload Media API
+  version: "1.0"
+paths:
+  /current-block:
+    get:
+      consumes:
+      - application/json
+      description: Get current block which address is pointing
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Block'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get Current Block
+      tags:
+      - blockchain
+  /subscribe:
+    post:
+      consumes:
+      - application/json
+      description: Subcribe address into database
+      parameters:
+      - description: Address to subscribe
+        in: body
+        name: address
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Subcribe address
+      tags:
+      - blockchain
+  /transactions:
+    get:
+      consumes:
+      - application/json
+      description: get transactions in subscribed address
+      parameters:
+      - description: Address to get transactions
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.Transaction'
+              type: array
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Show an transactions
+      tags:
+      - blockchain
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
